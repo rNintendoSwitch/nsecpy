@@ -1,0 +1,3 @@
+mongoUser = ""
+mongoPass = ""
+mongoHost = ""
