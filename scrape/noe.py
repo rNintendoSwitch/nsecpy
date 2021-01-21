@@ -1,5 +1,6 @@
 from aiohttp import ClientSession
 
+
 ENDPOINT = 'https://searching.nintendo-europe.com/{0}/select?q=*&start=0&rows=1000000&fq=(type:"game"AND((playable_on_txt%3A"HAC")))'
 REGIONS = [
     'at',  # Austria - de_AT
