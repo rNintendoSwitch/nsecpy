@@ -1,6 +1,7 @@
 from .classes import UndefinedRegion
 from .noe import EuropeanRegion
 
+
 # Regions from https://www.nintendo.com/regionselector/
 REGIONS = [
     # -------- Americas --------

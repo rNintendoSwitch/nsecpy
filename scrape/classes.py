@@ -1,4 +1,5 @@
-import abc, typing
+import abc
+import typing
 
 
 class Game:
