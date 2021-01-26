@@ -3,6 +3,7 @@ from dataclasses import dataclass
 from .searchproviders import SearchProvider
 from .searchproviders.europe import EuropeSearch
 from .searchproviders.north_america import NorthAmericanSearch
+from .searchproviders.south_america import SouthAmericanSearch
 
 
 @dataclass
@@ -19,11 +20,11 @@ regions = [
     Region('en_CA', 'Canada (English)', NorthAmericanSearch('en_CA')),
     Region('fr_CA', 'Canada (French)', NorthAmericanSearch('fr_CA')),
     Region('es_LA', 'México', NorthAmericanSearch('es_LA')),
-    Region('pt_BR', 'Brasil'),
-    Region('es_CO', 'Colombia'),
-    Region('es_AR', 'Argentina'),
-    Region('es_CL', 'Chile'),
-    Region('es_PE', 'Perú'),
+    Region('pt_BR', 'Brasil', SouthAmericanSearch('store.nintendo.com.br')),
+    Region('es_CO', 'Colombia', SouthAmericanSearch('store.nintendo.co')),
+    Region('es_AR', 'Argentina', SouthAmericanSearch('store.nintendo.com.ar')),
+    Region('es_CL', 'Chile', SouthAmericanSearch('store.nintendo.cl')),
+    Region('es_PE', 'Perú', SouthAmericanSearch('store.nintendo.com.pe')),
     # -------- Asia Pacific --------
     Region('ja_JP', 'Japan'),
     Region('ko_KR', 'Korea'),
