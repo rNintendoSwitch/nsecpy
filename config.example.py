@@ -1,3 +1,0 @@
-mongoUser = ""
-mongoPass = ""
-mongoHost = ""
