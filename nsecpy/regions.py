@@ -33,8 +33,8 @@ regions = [
     Region('en_NZ', 'New Zealand'),
     # -------- Europe, Middle East & Africa --------
     Region('de_AT', 'Austria', EuropeSearch('at')),
-    Region('fr_BE', 'België (Dutch)', EuropeSearch('befr')),
-    Region('nl_BE', 'Belgique (French)', EuropeSearch('denl')),
+    Region('nl_BE', 'België (Dutch)', EuropeSearch('benl')),
+    Region('fr_BE', 'Belgique (French)', EuropeSearch('befr')),
     Region('en_CZ', 'Czech Republic'),
     Region('en_DK', 'Denmark'),
     Region('de_DE', 'Deutschland', EuropeSearch('de')),
