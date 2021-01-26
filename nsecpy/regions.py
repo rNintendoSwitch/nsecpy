@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+
 from .searchproviders import SearchProvider
 from .searchproviders.europe import EuropeSearch
 

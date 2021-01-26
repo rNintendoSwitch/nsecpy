@@ -1,5 +1,7 @@
-import abc, typing
+import abc
+import typing
 from dataclasses import dataclass
+
 
 # TODO: Move this to another file and do something with it
 @dataclass
