@@ -1,9 +1,16 @@
 from dataclasses import dataclass
 
-from .searchproviders import SearchProvider
-from .searchproviders.europe import EuropeSearch
-from .searchproviders.north_america import NorthAmericanSearch
-from .searchproviders.south_america import SouthAmericanSearch
+from .searchproviders import (
+    SearchProvider,
+    EuropeSearch,
+    NorthAmericanSearch,
+    SouthAmericanSearch,
+    JapanSearch,
+    KoreanSearch,
+    MainlandChinaSearch,
+    GreaterChinaSearch,
+    OceanianSearch,
+)
 
 
 @dataclass
@@ -26,13 +33,13 @@ regions = [
     Region('es_CL', 'Chile', SouthAmericanSearch('store.nintendo.cl')),
     Region('es_PE', 'Perú', SouthAmericanSearch('store.nintendo.com.pe')),
     # -------- Asia Pacific --------
-    Region('ja_JP', 'Japan'),
-    Region('ko_KR', 'Korea'),
-    Region('zh_CN', 'China Mainland (Tencent)'),
-    Region('zh_TW', 'Taiwan'),
-    Region('zh_CH', 'Hong Kong'),
-    Region('en_AU', 'Australia'),
-    Region('en_NZ', 'New Zealand'),
+    Region('ja_JP', 'Japan', JapanSearch()),
+    Region('ko_KR', 'Korea', KoreanSearch()),
+    Region('zh_CN', 'China Mainland (Tencent)', MainlandChinaSearch()),
+    Region('zh_TW', 'Taiwan', GreaterChinaSearch('www.nintendo.tw')),
+    Region('zh_CH', 'Hong Kong', GreaterChinaSearch('www.nintendo.com.hk')),
+    Region('en_AU', 'Australia', OceanianSearch()),
+    Region('en_NZ', 'New Zealand', OceanianSearch()),
     # -------- Europe, Middle East & Africa --------
     Region('de_AT', 'Austria', EuropeSearch('at')),
     Region('nl_BE', 'België (Dutch)', EuropeSearch('benl')),
