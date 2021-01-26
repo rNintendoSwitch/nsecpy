@@ -4,7 +4,7 @@ from dataclasses import dataclass
 
 from .americas import *
 from .asia_pacific import *
-from .europe import *
+from .emea import *
 
 
 # TODO: Move this to another file and do something with it

@@ -4,7 +4,7 @@ from . import Game, SearchProvider
 
 
 # TODO: ENDPOINT = 'https://searching.nintendo-europe.com/{solrLanguage}/select?q=*&start=0&rows=1000000&fq=(type:"game"AND((playable_on_txt%3A"HAC")))'
-class EuropeSearch(metaclass=SearchProvider):
+class WesternEuropeSearch(metaclass=SearchProvider):
     def __init__(self, solrLanguage):
         self.solrLanguage = solrLanguage
 
