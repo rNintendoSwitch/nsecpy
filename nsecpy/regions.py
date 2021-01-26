@@ -1,15 +1,15 @@
 from dataclasses import dataclass
 
 from .searchproviders import (
-    SearchProvider,
     EuropeSearch,
-    NorthAmericanSearch,
-    SouthAmericanSearch,
+    GreaterChinaSearch,
     JapanSearch,
     KoreanSearch,
     MainlandChinaSearch,
-    GreaterChinaSearch,
+    NorthAmericanSearch,
     OceanianSearch,
+    SearchProvider,
+    SouthAmericanSearch,
 )
 
 

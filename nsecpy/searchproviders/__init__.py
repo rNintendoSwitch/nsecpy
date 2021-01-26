@@ -2,9 +2,10 @@ import abc
 import typing
 from dataclasses import dataclass
 
-from .europe import *
 from .americas import *
 from .asia_pacific import *
+from .europe import *
+
 
 # TODO: Move this to another file and do something with it
 @dataclass
