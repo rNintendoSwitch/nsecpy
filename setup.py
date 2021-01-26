@@ -5,7 +5,7 @@ setup(
     name='nsecpy',
     packages=find_packages(include=['nsecpy']),
     version='0.0.0',
-    description='',
+    description='Python library that provides common interfaces to select Nintendo eShop APIs',
     author='7bitlyrus',
     license='MIT',
     install_requires=[],
