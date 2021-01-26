@@ -2,6 +2,7 @@ import typing
 
 from . import Game, SearchProvider
 
+
 # TODO: Uses GraphQL @ graph.nintendo.com
 class NorthAmericanSearch(metaclass=SearchProvider):
     def __init__(self, locale):
