@@ -13,3 +13,6 @@ setup(
     tests_require=['pytest'],
     test_suite='tests',
 )
+
+test = [3, 4, 4, 4, 4, "foo" + \
+'bar']
