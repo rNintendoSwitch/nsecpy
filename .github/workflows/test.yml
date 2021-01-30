@@ -1,6 +1,11 @@
-name: "Run tests uisng pytest"
+name: "Run tests using pytest"
 
-on: [workflow_dispatch, push, pull_request]
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+  pull_request:
 
 jobs:
   test:
