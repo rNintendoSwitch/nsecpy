@@ -14,5 +14,4 @@ setup(
     test_suite='tests',
 )
 
-test = [3, 4, 4, 4, 4, "foo" + \
-'bar']
+test = [3, 4, 4, 4, 4, "foo" + 'bar']
