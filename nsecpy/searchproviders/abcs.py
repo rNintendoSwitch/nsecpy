@@ -1,6 +1,5 @@
 import abc
 import typing
-
 from dataclasses import dataclass
 
 
