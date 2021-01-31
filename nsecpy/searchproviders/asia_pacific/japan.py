@@ -1,10 +1,10 @@
 import typing
 
-from . import Game, SearchProvider
+from ..abcs import Game, SearchProvider
 
 
 # TODO: Uses https://search.nintendo.jp/nintendo_soft/search.json?opt_hard=1_HAC&limit=300&page=1
-class JapanSearch(metaclass=SearchProvider):
+class JapanSearch(SearchProvider):
     def __init__(self):
         pass
 

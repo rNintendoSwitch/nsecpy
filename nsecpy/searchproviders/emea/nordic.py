@@ -1,10 +1,10 @@
 import typing
 
-from . import Game, SearchProvider
+from ..abcs import Game, SearchProvider
 
 
 # TODO
-class NordicSearch(metaclass=SearchProvider):
+class NordicSearch(SearchProvider):
     def __init__(self, domain):
         self.domain = domain
 

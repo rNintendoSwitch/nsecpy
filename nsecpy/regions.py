@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 
 from .searchproviders import *
+from .searchproviders.abcs import SearchProvider
 
 
 @dataclass

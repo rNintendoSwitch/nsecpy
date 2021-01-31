@@ -1,10 +1,10 @@
 import typing
 
-from . import Game, SearchProvider
+from ..abcs import Game, SearchProvider
 
 
 # TODO: gets all data from https://{domain}/data/json/switch_software.json?281948944235=
-class GreaterChinaSearch(metaclass=SearchProvider):
+class GreaterChinaSearch(SearchProvider):
     def __init__(self, domain):
         self.domain = domain
 

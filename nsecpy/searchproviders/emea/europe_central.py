@@ -1,10 +1,10 @@
 import typing
 
-from . import Game, SearchProvider
+from ..abcs import Game, SearchProvider
 
 
 # TODO
-class CentralEuropeSearch(metaclass=SearchProvider):
+class CentralEuropeSearch(SearchProvider):
     def __init__(self, domain):
         self.domain = domain
 

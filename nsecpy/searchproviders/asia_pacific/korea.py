@@ -1,10 +1,10 @@
 import typing
 
-from . import Game, SearchProvider
+from ..abcs import Game, SearchProvider
 
 
 # TODO: https://www.nintendo.co.kr/search.php?globalSearch=egg
-class KoreanSearch(metaclass=SearchProvider):
+class KoreanSearch(SearchProvider):
     def __init__(self):
         pass
 

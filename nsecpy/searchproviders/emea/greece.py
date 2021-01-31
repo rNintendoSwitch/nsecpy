@@ -1,10 +1,10 @@
 import typing
 
-from . import Game, SearchProvider
+from ..abcs import Game, SearchProvider
 
 
 # TODO: some weirdless with https://www.cdmedia.gr/playroom.html
-class GreeceSearch(metaclass=SearchProvider):
+class GreeceSearch(SearchProvider):
     def __init__(self):
         pass
 

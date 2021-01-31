@@ -1,10 +1,10 @@
 import typing
 
-from . import Game, SearchProvider
+from ..abcs import Game, SearchProvider
 
 
 # TODO: Uses https://www.nintendoswitch.com.cn/api/web/official_website/query_software_game_list?limit=8&offset=8
-class MainlandChinaSearch(metaclass=SearchProvider):
+class MainlandChinaSearch(SearchProvider):
     def __init__(self):
         pass
 

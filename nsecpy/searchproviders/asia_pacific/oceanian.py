@@ -1,10 +1,10 @@
 import typing
 
-from . import Game, SearchProvider
+from ..abcs import Game, SearchProvider
 
 
 # TODO
-class OceanianSearch(metaclass=SearchProvider):
+class OceanianSearch(SearchProvider):
     def __init__(self):
         pass
 
