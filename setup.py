@@ -8,8 +8,4 @@ setup(
     description='Python library that provides common interfaces to select Nintendo eShop APIs',
     author='7bitlyrus',
     license='MIT',
-    install_requires=[],
-    setup_requires=['pytest-runner'],
-    tests_require=['pytest'],
-    test_suite='tests',
 )

@@ -18,5 +18,7 @@ jobs:
         with:
           python-version: 3.8
 
-      - name: Run pytest
-        run: python setup.py pytest
+      - name: Run tests
+        run: |
+             pip install tox
+             tox
