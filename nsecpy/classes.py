@@ -27,7 +27,7 @@ class PlatformOutage:
     utc_del_time: datetime = None
     event_status: EventStatus = None
     services: List[str] = field(default_factory=list)
-    update_date = datetime = None
+    update_date: datetime = None
 
 
 @dataclass
