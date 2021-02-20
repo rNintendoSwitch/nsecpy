@@ -4,16 +4,21 @@ from enum import Enum
 from typing import Dict, List
 
 
-@dataclass
-class PlatformStatus:
-    name: str
-    type: int  # turn into an enum at some point?
-
-
 class EventStatus(Enum):
     DISCOVERED = 1  # this is a guess.
     IDENTIFIED = 2  # this is a guess.
     ENDED = 3
+
+
+class PlatformTypeEnum(Enum):
+    NORMAL = 0
+    OFFLINE = 1  # this is a guess.
+
+
+@dataclass
+class PlatformStatus:
+    name: str
+    type: PlatformTypeEnum
 
 
 @dataclass
