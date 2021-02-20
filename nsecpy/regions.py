@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from typing import Optional
 
 from .searchproviders.abcs import SearchProvider
-from .status import getStatus, Status
+from .status import Status, getStatus
 
 
 @dataclass
