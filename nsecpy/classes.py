@@ -7,7 +7,7 @@ from typing import Dict, List
 @dataclass
 class PlatformStatus:
     name: str
-    type: int
+    type: int  # turn into an enum at some point?
 
 
 class EventStatus(Enum):
