@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from typing import Optional
 
 from .searchproviders.abcs import SearchProvider
+from .status import getStatus, Status
 
 
 @dataclass
@@ -12,7 +13,11 @@ class Region:
     has_netinfo: bool = False
     netinfo_TZ: Optional[str] = None
 
+    async def getStatus(self) -> Status:
+        return await getStatus(self)
 
+
+# TODO: Method to get region by index of culture_code
 # Regions from https://www.nintendo.com/regionselector/
 regions = [
     # -------- Americas --------
