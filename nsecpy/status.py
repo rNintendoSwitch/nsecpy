@@ -6,6 +6,7 @@ from typing import TYPE_CHECKING, Dict, List, Optional
 import aiohttp
 import dateparser
 
+
 if TYPE_CHECKING:
     from nsecpy.regions import Region
 
