@@ -17,9 +17,8 @@ class Region:
         return await getStatus(self)
 
 
-# TODO: Method to get region by index of culture_code
 # Regions from https://www.nintendo.com/regionselector/
-regions = [
+regions_list = [
     # -------- Americas --------
     Region('en_US', 'USA', has_netinfo=True, netinfo_TZ="America/Los_Angeles"),
     Region('en_CA', 'Canada (English)'),
@@ -62,3 +61,6 @@ regions = [
     Region('it_CH', 'Svizzera (Italian)'),
     Region('en_GB', 'UK & Ireland', has_netinfo=True, netinfo_TZ="Europe/London"),
 ]
+
+# Comprehend list into dict, indexed by culture code
+regions = {r.culture_code: r for r in regions_list}
