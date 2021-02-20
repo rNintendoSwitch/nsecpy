@@ -1,9 +1,11 @@
 from dataclasses import dataclass, field
-from nsecpy.regions import Region
-import dateparser
 from datetime import datetime  # for typehinting
 from enum import Enum
 from typing import Dict, List, Optional
+
+import dateparser
+
+from nsecpy.regions import Region
 
 
 class EventStatus(Enum):

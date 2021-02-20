@@ -1,5 +1,7 @@
-from nsecpy.regions import Region
 import aiohttp
+
+from nsecpy.regions import Region
+
 from .classes import Status
 
 
