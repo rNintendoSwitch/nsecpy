@@ -9,7 +9,7 @@ class Region:
     culture_code: str
     familar_name: str
     search_provider: SearchProvider = None
-    has_netinfo: bool = False  # https://www.nintendo.co.jp/netinfo/xx_XX/status.json
+    has_netinfo: bool = False
     netinfo_TZ: Optional[str] = None
 
 
