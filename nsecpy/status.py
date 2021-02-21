@@ -26,11 +26,11 @@ class PlatformType(Enum):
 @dataclass
 class PlatformStatus:
     name: str = None
-    type: PlatformTypeEnum = None
+    type: PlatformType = None
 
     def __init__(self, data: Dict) -> None:
         self.name = data.get('name')
-        self.type = PlatformTypeEnum(data.get('type'))
+        self.type = PlatformType(data.get('type'))
 
 
 @dataclass
