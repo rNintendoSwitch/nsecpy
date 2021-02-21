@@ -18,7 +18,7 @@ class EventStatus(Enum):
     ENDED = 3
 
 
-class PlatformTypeEnum(Enum):
+class PlatformType(Enum):
     NORMAL = 0
     OFFLINE = 1
 
