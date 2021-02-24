@@ -64,7 +64,7 @@ class PlatformOutage:
         if data.get('utc_del_time'):
             self.utc_del_time = dateparser.parse(
                 data['utc_del_time'].replace(' :', ':'),
-                settings={'TIMEZONE': region.netinfo_TZ, 'RETURN_AS_TIMEZONE_AWARE': True},
+                settings={'TIMEZONE': "UTC", 'RETURN_AS_TIMEZONE_AWARE': True},
             )
         self.event_status = EventStatus(int(data['event_status']))
         self.services = data.get('services', [])
