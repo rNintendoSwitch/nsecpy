@@ -1,7 +1,6 @@
 from dataclasses import dataclass
 from typing import Optional
 
-from .searchproviders.abcs import SearchProvider
 from .status import Status, getStatus
 
 
@@ -9,7 +8,7 @@ from .status import Status, getStatus
 class Region:
     culture_code: str
     familar_name: str
-    search_provider: SearchProvider = None
+    # search_provider: SearchProvider = None
     has_netinfo: bool = False
     netinfo_TZ: Optional[str] = None
 
