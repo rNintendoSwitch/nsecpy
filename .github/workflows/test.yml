@@ -23,8 +23,3 @@ jobs:
         with:
           name: coverage-report-html
           path: htmlcov/
-
-      - uses: actions/upload-artifact@v2
-        with:
-          name: coverage-report-xml
-          path: coverage.xml
