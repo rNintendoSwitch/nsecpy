@@ -70,7 +70,7 @@ class PlatformOutage:
         self.services = data.get('services', [])
         if data.get('update_date'):
             self.update_date = dateparser.parse(
-                data['utc_del_time'].replace(' :', ':'),
+                data['update_date'].replace(' :', ':'),
                 settings={'TIMEZONE': region.netinfo_TZ, 'RETURN_AS_TIMEZONE_AWARE': True},
             )
 
