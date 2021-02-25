@@ -1,8 +1,9 @@
 import asyncio
 from os import execlp
-import pytest
 
+import pytest
 from aioresponses import aioresponses
+
 from nsecpy import regions
 
 
