@@ -68,7 +68,11 @@ class PlatformOutage:
             )
         self.event_status = EventStatus(int(data['event_status']))
         self.services = data.get('services', [])
-        self
+        if data.get('update_date'):
+            self.update_date = dateparser.parse(
+                data['utc_del_time'].replace(' :', ':'),
+                settings={'TIMEZONE': region.netinfo_TZ, 'RETURN_AS_TIMEZONE_AWARE': True},
+            )
 
 
 @dataclass
