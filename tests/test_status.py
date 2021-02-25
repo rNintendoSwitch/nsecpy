@@ -144,8 +144,11 @@ def test_status_equality():
             (en_status.operational_statuses, de_status.operational_statuses),
             (en_status.temporary_maintenances, de_status.temporary_maintenances),
         ]:
-            for i in range(len(outage_group[0])):
-                en, de = outage_group[0][i], outage_group[1][i]
+            en_outages, de_outages = outage_group
+            assert len(en_outages) == len(de_outages)
+
+            for i in range(len(en_outages)):
+                en, de = en_outages[i], de_outages[i]
 
                 # Asserts for existance
                 for attr in ['software_title', 'message', 'free_write', 'services', 'update_date']:
