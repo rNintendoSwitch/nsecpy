@@ -1,6 +1,6 @@
-from dataclasses import dataclass, field
 import datetime
-from typing import List, Dict, Literal, Optional
+from dataclasses import dataclass, field
+from typing import Dict, List, Literal, Optional
 
 
 @dataclass
