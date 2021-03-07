@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 from datetime import datetime  # for typehinting
-from typing import TYPE_CHECKING, List, Literal, Optional, Generator
+from typing import TYPE_CHECKING, Generator, List, Literal, Optional
 
 import aiohttp
 
