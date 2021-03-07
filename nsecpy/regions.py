@@ -1,7 +1,9 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
+from functools import partial
 from typing import Optional
 
-from .status import Status, getStatus
+from .status import getStatus
+from .listing import gameListing
 
 
 @dataclass
@@ -12,8 +14,12 @@ class Region:
     has_netinfo: bool = False
     netinfo_TZ: Optional[str] = None
 
-    async def getStatus(self) -> Status:
-        return await getStatus(self)
+    getStatus: partial = field(init=False, repr=False)
+    gameListing: partial = field(init=False, repr=False)
+
+    def __post_init__(self):
+        self.getStatus = partial(getStatus, self)
+        self.gameListing = partial(gameListing, self)
 
 
 # Regions from https://www.nintendo.com/regionselector/
