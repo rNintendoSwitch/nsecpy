@@ -90,7 +90,7 @@ class Game:
         self.target_titles = data['target_titles']
 
 
-async def gameListing(region: "Region", type: Literal["sales", "new", "ranking"]) -> Generator[List[Game], None, None]:
+async def gameListing(region: "Region", type: Literal["sales", "new", "ranking"]) -> Generator[Game, None, None]:
     COUNT = 30
 
     # TODO: Check if (all) regions support this endpoint?
