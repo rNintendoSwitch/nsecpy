@@ -173,7 +173,7 @@ def test_status_equality():
 
 def test_status_invalid_region():
     for region in regions.values():
-        if not region.supports_listing:
+        if not region.netinfo_TZ:
             with pytest.raises(ValueError) as e_info:
                 loop = asyncio.get_event_loop()
                 status = loop.run_until_complete(region.getStatus())
