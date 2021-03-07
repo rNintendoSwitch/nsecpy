@@ -30,7 +30,7 @@ regions_list = [
     Region('es_PE', 'Perú'),
     # -------- Asia Pacific --------
     Region('ja_JP', 'Japan', has_netinfo=True, netinfo_TZ="Asia/Tokyo"),
-    Region('ko_KR', 'Korea', has_netinfo=True, netinfo_TZ="asia/Seoul"),
+    Region('ko_KR', 'Korea', has_netinfo=True, netinfo_TZ="Asia/Seoul"),
     Region('zh_CN', 'China Mainland (Tencent)', has_netinfo=True, netinfo_TZ="Asia/Shanghai"),
     Region('zh_TW', 'Taiwan', has_netinfo=True, netinfo_TZ="Asia/Taipei"),
     Region('zh_CH', 'Hong Kong'),
