@@ -2,8 +2,8 @@ from dataclasses import dataclass, field
 from functools import partial
 from typing import Optional
 
-from .status import getStatus
 from .listing import gameListing
+from .status import getStatus
 
 
 @dataclass
