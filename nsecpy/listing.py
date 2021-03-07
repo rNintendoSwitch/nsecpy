@@ -1,6 +1,12 @@
-import datetime
 from dataclasses import dataclass, field
-from typing import Dict, List, Literal, Optional
+from datetime import datetime  # for typehinting
+from typing import TYPE_CHECKING, List, Literal, Optional, Generator
+
+import aiohttp
+
+
+if TYPE_CHECKING:
+    from nsecpy.regions import Region  # pragma: no cover
 
 
 @dataclass
@@ -40,7 +46,35 @@ class Game:
     rating_content: List[ContentType] = field(default_factory=list)
     rating: Rating = None
     rating_system: RatingSystem = None
-    release_date_on_eshop: datetime.datetime = None
+    release_date_on_eshop: datetime = None
     screenshots: List[str] = field(default_factory=list)
     tags: List = field(default_factory=list)
     target_titles: List = field(default_factory=list)
+
+
+async def fetchListing(region: "Region", type: Literal["sales", "new", "ranking"]) -> Generator[List[Game]]:
+    COUNT = 30
+
+    # TODO: Check if (all) regions support this endpoint?
+
+    if type not in ["sales", "new", "ranking"]:
+        raise ValueError("invalid type: " + type)
+
+    lang, reg = region.culture_code.split('_')
+    offset = 0
+
+    async with aiohttp.ClientSession() as session:
+        while True:
+            url = f'https://ec.nintendo.com/api/{reg}/{lang}/search/{type}?offset={offset}&count={COUNT}'
+
+            async with session.get(url) as request:
+                request.raise_for_status()
+                data = await request.json()
+
+                for game in data['contents']:
+                    yield game  # TODO: Parse
+
+                if (offset + COUNT) >= data['total']:
+                    break
+
+            offset += COUNT
