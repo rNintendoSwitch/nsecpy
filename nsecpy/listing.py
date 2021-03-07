@@ -32,15 +32,19 @@ class RatingContent:
 class Rating:
     age: int = None
     id: int = None
-    image_url: str = None
-    name: str = None  # Literal["M", "T","E10","E"] ??? expand and replace hint
+    image_url: str = Optional[None]
+    name: str = None
     provisional: bool = None
     svg_image_url: str = None
 
     def __init__(self, data):
+        if (data['id']) == 0:
+            return None
+
         self.age = data['age']
         self.id = data['id']
-        self.image_url = data['image_url']
+        if data.get('image_url'):
+            self.image_url = data['image_url']
         self.provisional = data['provisional']
         self.svg_image_url = data['svg_image_url']
 
@@ -48,7 +52,7 @@ class Rating:
 @dataclass
 class RatingSystem:
     id: int = None
-    name: Literal["PEGI", "ESRB", "CERO"] = None
+    name: str = None
 
     def __init__(self, data):
         self.id = data['id']
@@ -93,10 +97,11 @@ class Game:
 async def gameListing(region: "Region", type: Literal["sales", "new", "ranking"]) -> Generator[Game, None, None]:
     COUNT = 30
 
-    # TODO: Check if (all) regions support this endpoint?
+    if not region.supports_listing:
+        raise ValueError("Region does not support listings")
 
     if type not in ["sales", "new", "ranking"]:
-        raise ValueError("invalid type: " + type)
+        raise ValueError("Invalid type: " + type)
 
     lang, reg = region.culture_code.split('_')
     offset = 0
