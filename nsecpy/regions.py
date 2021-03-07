@@ -1,9 +1,8 @@
-from dataclasses import dataclass, field
-from functools import partial
-from typing import Optional
+from dataclasses import dataclass
+from typing import Generator, List, Literal, Optional
 
-from .status import getStatus
-from .listing import gameListing
+from .status import getStatus, Status
+from .listing import gameListing, Game
 
 
 @dataclass
@@ -14,12 +13,12 @@ class Region:
     has_netinfo: bool = False
     netinfo_TZ: Optional[str] = None
 
-    getStatus: partial = field(init=False, repr=False)
-    gameListing: partial = field(init=False, repr=False)
+    async def getStatus(self) -> Status:
+        return await getStatus(self)
 
-    def __post_init__(self):
-        self.getStatus = partial(getStatus, self)
-        self.gameListing = partial(gameListing, self)
+    async def gameListing(self, type: Literal["sales", "new", "ranking"]) -> Generator[Game, None, None]:
+        async for game in gameListing(self, type):
+            yield game
 
 
 # Regions from https://www.nintendo.com/regionselector/
