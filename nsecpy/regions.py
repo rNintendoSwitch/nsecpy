@@ -1,8 +1,8 @@
 from dataclasses import dataclass
 from typing import Generator, List, Literal, Optional
 
-from .status import getStatus, Status
-from .listing import gameListing, Game
+from .listing import gameListing
+from .status import getStatus
 
 
 @dataclass
