@@ -52,7 +52,7 @@ class Game:
     target_titles: List = field(default_factory=list)
 
 
-async def fetchListing(region: "Region", type: Literal["sales", "new", "ranking"]) -> Generator[List[Game]]:
+async def fetchListing(region: "Region", type: Literal["sales", "new", "ranking"]) -> Generator[List[Game], None, None]:
     COUNT = 30
 
     # TODO: Check if (all) regions support this endpoint?
