@@ -1,9 +1,11 @@
 import asyncio
-import pytest
 
+import pytest
 from aioresponses import aioresponses
+
 from nsecpy import regions
 from nsecpy.listing import COUNT
+
 
 SAMPLE_GAME = {
     "content_type": "title",

@@ -5,6 +5,7 @@ from typing import TYPE_CHECKING, Generator, List, Literal, Optional
 import aiohttp
 import dateparser
 
+
 COUNT = 30  # Items per page of paginated response
 
 if TYPE_CHECKING:
