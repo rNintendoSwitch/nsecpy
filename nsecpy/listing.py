@@ -5,6 +5,7 @@ from typing import TYPE_CHECKING, Generator, List, Literal, Optional
 import aiohttp
 import dateparser
 
+COUNT = 30  # Items per page of paginated response
 
 if TYPE_CHECKING:
     from nsecpy.regions import Region  # pragma: no cover
@@ -95,8 +96,6 @@ class Game:
 
 
 async def gameListing(region: "Region", type: Literal["sales", "new", "ranking"]) -> Generator[Game, None, None]:
-    COUNT = 30
-
     if not region.supports_listing:
         raise ValueError("Region does not support listings")
 

@@ -1,9 +1,7 @@
 import asyncio
-from os import execlp
-
 import pytest
-from aioresponses import aioresponses
 
+from aioresponses import aioresponses
 from nsecpy import regions
 
 
@@ -25,7 +23,7 @@ SAMPLE_STATUS_EN = {
             "platform": ["web"],
             "platform_image": ["img/label_web.png"],
             "software_title": "Purchasing on Nintendo Game Store",
-            "message": "During the times specified below, we experienced technical difficulties with our network service. \nAt this time, the network service is back up and running. \nWe apologize for any inconvenience this may have caused.",
+            "message": "During the times specified below, ... \nAt this time, the network service is back up and...",
             "free_write": "",
             "begin": "Monday, January 22, 2018  2 :14 AM",
             "end": "Monday, January 22, 2018  3 :07 AM",
@@ -83,7 +81,7 @@ SAMPLE_STATUS_DE = {
             "platform": ["web"],
             "platform_image": ["img/label_web.png"],
             "software_title": "Kauf im Nintendo Game Store",
-            "message": "Während der unten angegebenen Zeiten hatten wir technische Probleme mit unserem Netzwerkdienst. \nZu diesem Zeitpunkt ist der Netzwerkdienst wieder aktiv. \nWir entschuldigen uns für etwaige Unannehmlichkeiten. ",
+            "message": "Während der unten angegebenen Zeiten... \nZu diesem Zeitpunkt ist der Netzwerkdienst wieder...",
             "free_write": "",
             "begin": "Montag, 22. Januar 2018, 11:14 Bin",
             "end": "Montag, 22. Januar 2018, 12:07 Uhr",
@@ -111,7 +109,7 @@ SAMPLE_STATUS_DE = {
             "platform": ["Nintendo Switch"],
             "platform_image": ["img/label_switch.png"],
             "software_title": "Online-Services",
-            "message": "Während des angegebenen Zeitraums führen wir Wartungsarbeiten am Server durch. Unsere Online-Services sind dann möglicherweise nicht verfügbar.",
+            "message": "Während des angegebenen Zeitraums führen wir Wartungsarbeiten am Server durch...",
             "free_write": "",
             "begin": "Donnerstag, 25. Februar 2021,  5:30 Uhr",
             "end": "Donnerstag, 25. Februar 2021,  8:30 Uhr",
@@ -123,14 +121,14 @@ SAMPLE_STATUS_DE = {
 }
 
 
-def test_status_equality():
-    loop = asyncio.get_event_loop()
+@pytest.mark.asyncio
+async def test_status_equality():
     with aioresponses() as m:
         m.get('https://www.nintendo.co.jp/netinfo/en_US/status.json', payload=SAMPLE_STATUS_EN)
         m.get('https://www.nintendo.co.jp/netinfo/de_DE/status.json', payload=SAMPLE_STATUS_DE)
 
-        en_status = loop.run_until_complete(regions['en_US'].getStatus())
-        de_status = loop.run_until_complete(regions['de_DE'].getStatus())
+        en_status = await regions['en_US'].getStatus()
+        de_status = await regions['de_DE'].getStatus()
 
         # Correct langs
         assert en_status.lang == 'en_US'
@@ -171,12 +169,12 @@ def test_status_equality():
                     assert abs(delta.total_seconds()) < 60 * 60 * 24 * 2
 
 
-def test_status_invalid_region():
+async def test_status_invalid_region():
     for region in regions.values():
         if not region.netinfo_TZ:
             with pytest.raises(ValueError) as e_info:
-                loop = asyncio.get_event_loop()
-                status = loop.run_until_complete(region.getStatus())
+                await region.getStatus()
 
             return
+
     raise RuntimeError('Failed to find region with no netinfo')
