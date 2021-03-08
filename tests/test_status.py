@@ -169,6 +169,7 @@ async def test_status_equality():
                     assert abs(delta.total_seconds()) < 60 * 60 * 24 * 2
 
 
+@pytest.mark.asyncio
 async def test_status_invalid_region():
     for region in regions.values():
         if not region.netinfo_TZ:

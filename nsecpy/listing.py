@@ -33,14 +33,14 @@ class RatingContent:
 class Rating:
     age: int = None
     id: int = None
-    image_url: str = Optional[None]
+    image_url: Optional[str] = None
     name: str = None
     provisional: bool = None
     svg_image_url: str = None
 
     def __init__(self, data):
         if (data['id']) == 0:
-            return None
+            return
 
         self.age = data['age']
         self.id = data['id']
