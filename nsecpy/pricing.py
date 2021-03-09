@@ -53,63 +53,11 @@ class PriceQuery:
             self.discount_price = DiscountPrice(data['discount_price'])
 
 
-### Sample Responses:
-# {"personalized":false,"country":"US","prices":[]}
-# {'personalized': False, 'country': 'US', 'prices': [{'title_id': 70010000009922, 'sales_status': 'not_found'}]}
-# {
-#     "personalized": false,
-#     "country": "JP",
-#     "prices": [
-#         {
-#             "title_id": 70010000009922,
-#             "sales_status": "onsale",
-#             "regular_price": {"amount": "1,620円", "currency": "JPY", "raw_value": "1620"},
-#         }
-#     ],
-# }
-# {
-#     "personalized": false,
-#     "country": "US",
-#     "prices": [
-#         {
-#             "title_id": 70010000039205,
-#             "sales_status": "onsale",
-#             "regular_price": {"amount": "$3.99", "currency": "USD", "raw_value": "3.99"},
-#             "discount_price": {
-#                 "amount": "$2.99",
-#                 "currency": "USD",
-#                 "raw_value": "2.99",
-#                 "start_datetime": "2021-03-06T10:00:00Z",
-#                 "end_datetime": "2021-03-26T15:59:59Z",
-#             },
-#         }
-#     ],
-# }
-#
-# {"personalized":false,"country":"US","prices":[{"title_id":70010000013347,"sales_status":"sales_termination","regular_price":{"amount":"$0.00","currency":"USD","raw_value":"0"}}]}
-
-# Sample Tests:
-# from nsecpy import regions
-# from nsecpy.pricing import priceQuery
-# import asyncio
-# asyncio.run( priceQuery(regions['en_US'], '70010000039205') )
-
-# from nsecpy import regions
-# import asyncio
-#
-# async def run():
-#   async for game in regions['en_US'].gameListing('sales'):
-#     print(await game.queryPrice())
-#
-#
-# asyncio.run ( run()  )
-
-
 class NotFoundError(Exception):
     pass
 
 
-class NoInfoError(Exception):
+class NoDataError(Exception):
     pass
 
 
@@ -128,4 +76,4 @@ async def queryPrice(region: "Region", game_id: int) -> PriceQuery:
             if 'prices' in data and data['prices']:
                 return PriceQuery(data['prices'][0])
             else:
-                raise NoInfoError('The API did not return any price info for given game id')
+                raise NoDataError('The API did not return any price data for given game id')

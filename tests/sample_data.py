@@ -157,3 +157,22 @@ SAMPLE_GAME = {
     "tags": [],
     "target_titles": [],
 }
+
+SAMPLE_PRICE_RESPONSE  ={
+    "personalized": False,
+    "country": "US",
+    "prices": [
+        {
+            "title_id": 70010000039205,
+            "sales_status": "onsale",
+            "regular_price": {"amount": "$3.99", "currency": "USD", "raw_value": "3.99"},
+            "discount_price": {
+                "amount": "$2.99",
+                "currency": "USD",
+                "raw_value": "2.99",
+                "start_datetime": "2021-03-06T10:00:00Z",
+                "end_datetime": "2021-03-26T15:59:59Z",
+            },
+        }
+    ],
+}
