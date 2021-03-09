@@ -1,56 +1,9 @@
-import asyncio
-
 import pytest
 from aioresponses import aioresponses
 
 from nsecpy import regions
 from nsecpy.listing import COUNT
-
-
-SAMPLE_GAME = {
-    "content_type": "title",
-    "dominant_colors": ["0c1016", "fafaf9", "fce862"],
-    "formal_name": "Among Us",
-    "hero_banner_url": "https://example.com/hero.jpg",
-    "id": 70010000036098,
-    "is_new": False,
-    "membership_required": False,
-    "public_status": "public",
-    "rating_info": {
-        "content_descriptors": [
-            {
-                "id": 14,
-                "name": "Fantasy Violence",
-                "type": "descriptor",
-                "image_url": "https://example.com/foo.jpg",
-                "svg_image_url": "https://example.com/foo.svg",
-            },
-            {
-                "id": 31,
-                "name": "Mild Blood",
-                "type": "descriptor",
-                "image_url": "https://example.com/bar.jpg",
-                "svg_image_url": "https://example.com/bar.svg",
-            },
-        ],
-        "rating": {
-            "age": 10,
-            "id": 3,
-            "image_url": "https://example.com/e10.jpg",
-            "name": "E10+",
-            "provisional": False,
-            "svg_image_url": "https://example.com/e10.svg",
-        },
-        "rating_system": {"id": 202, "name": "ESRB"},
-    },
-    "release_date_on_eshop": "2020-12-15",
-    "screenshots": [
-        {"images": [{"url": "https://example.com/1.jpg"}]},
-        {"images": [{"url": "https://example.com/2.jpg"}]},
-    ],
-    "tags": [],
-    "target_titles": [],
-}
+from .sample_data import SAMPLE_GAME
 
 
 def build_sample_response_from_contents(contents, total=None, offset=0):
