@@ -2,8 +2,8 @@ from dataclasses import dataclass
 from typing import Generator, List, Literal, Optional
 
 from .listing import Game, gameListing
-from .status import Status, getStatus
 from .pricing import PriceQuery, queryPrice
+from .status import Status, getStatus
 
 
 @dataclass

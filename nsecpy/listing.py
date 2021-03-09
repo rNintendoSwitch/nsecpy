@@ -7,6 +7,7 @@ import dateparser
 
 from .pricing import PriceQuery, queryPrice
 
+
 COUNT = 30  # Items per page of paginated response
 
 if TYPE_CHECKING:
