@@ -3,6 +3,7 @@ from typing import Generator, List, Literal, Optional
 
 from .listing import Game, gameListing
 from .status import Status, getStatus
+from .pricing import PriceQuery, queryPrice
 
 
 @dataclass
@@ -19,6 +20,9 @@ class Region:
     async def gameListing(self, type: Literal["sales", "new", "ranking"]) -> Generator[Game, None, None]:
         async for game in gameListing(self, type):
             yield game
+
+    async def queryPrice(self, game_id: int) -> PriceQuery:
+        return await queryPrice(self, game_id)
 
 
 # Regions from https://www.nintendo.com/regionselector/

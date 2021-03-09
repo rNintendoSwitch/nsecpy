@@ -7,7 +7,7 @@ import aiohttp
 import dateparser
 
 if TYPE_CHECKING:
-    from nsecpy.regions import Region  # pragma: no cover
+    from .regions import Region  # pragma: no cover
 
 
 @dataclass
@@ -49,10 +49,6 @@ class PriceQuery:
 
 
 ### Sample Responses:
-# from nsecpy import regions
-# from nsecpy.pricing import priceQuery
-# import asyncio
-# asyncio.run( priceQuery(regions['en_US'], '70010000039205') )
 # {'personalized': False, 'country': 'US', 'prices': [{'title_id': 70010000009922, 'sales_status': 'not_found'}]}
 # {
 #     "personalized": false,
@@ -83,6 +79,22 @@ class PriceQuery:
 #         }
 #     ],
 # }
+
+# Sample Tests:
+# from nsecpy import regions
+# from nsecpy.pricing import priceQuery
+# import asyncio
+# asyncio.run( priceQuery(regions['en_US'], '70010000039205') )
+
+# from nsecpy import regions
+# import asyncio
+
+# async def run():
+#   async for game in regions['en_US'].gameListing('sales'):
+#     print(await game.queryPrice())
+
+
+# asyncio.run ( run()  )
 
 
 class NotFoundError(Exception):

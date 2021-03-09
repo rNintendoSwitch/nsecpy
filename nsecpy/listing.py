@@ -5,11 +5,12 @@ from typing import TYPE_CHECKING, Generator, List, Literal, Optional
 import aiohttp
 import dateparser
 
+from .pricing import PriceQuery, queryPrice
 
 COUNT = 30  # Items per page of paginated response
 
 if TYPE_CHECKING:
-    from nsecpy.regions import Region  # pragma: no cover
+    from .regions import Region  # pragma: no cover
 
 
 @dataclass
@@ -96,6 +97,9 @@ class Game:
         self.screenshots = [s['images'][0]['url'] for s in data['screenshots']]
         self.tags = data['tags']
         self.target_titles = data['target_titles']
+
+    async def queryPrice(self) -> PriceQuery:
+        return await queryPrice(self.region, self.id)
 
 
 async def gameListing(region: "Region", type: Literal["sales", "new", "ranking"]) -> Generator[Game, None, None]:

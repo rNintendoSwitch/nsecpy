@@ -8,7 +8,7 @@ import dateparser
 
 
 if TYPE_CHECKING:
-    from nsecpy.regions import Region  # pragma: no cover
+    from .regions import Region  # pragma: no cover
 
 
 class EventStatus(Enum):
