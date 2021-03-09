@@ -49,7 +49,11 @@ class PriceQuery:
 
 
 ### Sample Responses:
-#
+# from nsecpy import regions
+# from nsecpy.pricing import priceQuery
+# import asyncio
+# asyncio.run( priceQuery(regions['en_US'], '70010000039205') )
+# {'personalized': False, 'country': 'US', 'prices': [{'title_id': 70010000009922, 'sales_status': 'not_found'}]}
 # {
 #     "personalized": false,
 #     "country": "JP",
@@ -81,11 +85,15 @@ class PriceQuery:
 # }
 
 
-class NoResultError(Exception):
+class NotFoundError(Exception):
     pass
 
 
-async def priceQuery(region: "Region", game_id: int) -> PriceQuery:
+class NoInfoError(Exception):
+    pass
+
+
+async def queryPrice(region: "Region", game_id: int) -> PriceQuery:
     # TODO: Check what regions this supports
 
     lang, reg = region.culture_code.split('_')
@@ -95,8 +103,13 @@ async def priceQuery(region: "Region", game_id: int) -> PriceQuery:
         async with session.get(url) as request:
             request.raise_for_status()
             data = await request.json()
+            print(data)
 
             if 'prices' in data and data['prices']:
-                return PriceQuery(data['prices'][0])
+                price_data = data['prices'][0]
+                if not price_data['sales_status'] == 'not_found':
+                    return PriceQuery(price_data)
+                else:
+                    return NotFoundError('The API reported no price info was found in this region for given game id')
             else:
-                return NoResultError('The API did not find price info for given game id')
+                return NoInfoError('The API did not return any price info for given game id')
