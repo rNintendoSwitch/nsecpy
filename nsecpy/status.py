@@ -6,6 +6,7 @@ from typing import TYPE_CHECKING, Dict, List, Optional
 import aiohttp
 import dateparser
 
+from .exceptions import UnsupportedRegionError
 
 if TYPE_CHECKING:
     from .regions import Region  # pragma: no cover
@@ -83,7 +84,7 @@ class Status:
 
 async def getStatus(region: "Region") -> Status:
     if not region.netinfo_TZ:
-        raise ValueError("Region does not support netinfo")
+        raise UnsupportedRegionError("Region does not support netinfo")
 
     async with aiohttp.ClientSession() as session:
         async with session.get(f"https://www.nintendo.co.jp/netinfo/{region.culture_code}/status.json") as request:

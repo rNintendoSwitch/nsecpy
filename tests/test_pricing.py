@@ -2,7 +2,7 @@ import copy
 import pytest
 from aioresponses import aioresponses
 
-from nsecpy import regions, NotFoundError, NoDataError
+from nsecpy import regions, NotFoundError, NoDataError, UnsupportedRegionError
 from nsecpy.listing import Game
 from .sample_data import SAMPLE_GAME, SAMPLE_PRICE_RESPONSE
 
@@ -90,7 +90,7 @@ async def test_pricing_no_data():
 async def test_pricing_invalid_region():
     for region in regions.values():
         if not region.supports_pricing:
-            with pytest.raises(ValueError) as e_info:
+            with pytest.raises(UnsupportedRegionError) as e_info:
                 await region.queryPrice(70010000039205)
 
             return

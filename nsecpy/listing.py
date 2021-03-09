@@ -6,6 +6,7 @@ import aiohttp
 import dateparser
 
 from .pricing import PriceQuery, queryPrice
+from .exceptions import UnsupportedRegionError
 
 
 COUNT = 30  # Items per page of paginated response
@@ -105,7 +106,7 @@ class Game:
 
 async def gameListing(region: "Region", type: Literal["sales", "new", "ranking"]) -> Generator[Game, None, None]:
     if not region.supports_listing:
-        raise ValueError("Region does not support listings")
+        raise UnsupportedRegionError("Region does not support listings")
 
     if type not in ["sales", "new", "ranking"]:
         raise ValueError("Invalid type: " + type)

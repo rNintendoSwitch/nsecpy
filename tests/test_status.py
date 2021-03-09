@@ -1,7 +1,7 @@
 import pytest
 from aioresponses import aioresponses
 
-from nsecpy import regions
+from nsecpy import regions, UnsupportedRegionError
 from .sample_data import SAMPLE_STATUS_EN, SAMPLE_STATUS_DE
 
 
@@ -57,7 +57,7 @@ async def test_status_equality():
 async def test_status_invalid_region():
     for region in regions.values():
         if not region.netinfo_TZ:
-            with pytest.raises(ValueError) as e_info:
+            with pytest.raises(UnsupportedRegionError) as e_info:
                 await region.getStatus()
 
             return

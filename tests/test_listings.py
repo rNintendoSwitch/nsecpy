@@ -2,7 +2,7 @@ import copy
 import pytest
 from aioresponses import aioresponses
 
-from nsecpy import regions
+from nsecpy import regions, UnsupportedRegionError
 from nsecpy.listing import COUNT
 from .sample_data import SAMPLE_GAME
 
@@ -101,7 +101,7 @@ async def test_listing_invalid_type():
 async def test_listing_invalid_region():
     for region in regions.values():
         if not region.supports_listing:
-            with pytest.raises(ValueError) as e_info:
+            with pytest.raises(UnsupportedRegionError) as e_info:
                 async for _ in region.gameListing('ranking'):
                     pass
 

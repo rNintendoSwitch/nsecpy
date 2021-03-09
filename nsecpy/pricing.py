@@ -6,6 +6,7 @@ from typing import TYPE_CHECKING, List, Literal, Optional
 import aiohttp
 import dateparser
 
+from .exceptions import UnsupportedRegionError, NotFoundError, NoDataError
 
 if TYPE_CHECKING:
     from .regions import Region  # pragma: no cover
@@ -53,17 +54,9 @@ class PriceQuery:
             self.discount_price = DiscountPrice(data['discount_price'])
 
 
-class NotFoundError(Exception):
-    pass
-
-
-class NoDataError(Exception):
-    pass
-
-
 async def queryPrice(region: "Region", game_id: int) -> PriceQuery:
     if not region.supports_pricing:
-        raise ValueError("Region does not support listings")
+        raise UnsupportedRegionError("Region does not support listings")
 
     lang, reg = region.culture_code.split('_')
     url = f"https://api.ec.nintendo.com/v1/price?country={reg}&lang={lang}&ids={game_id}"
