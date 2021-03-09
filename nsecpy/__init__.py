@@ -1,2 +1,2 @@
+from .pricing import NoInfoError, NotFoundError
 from .regions import regions
-from .pricing import NotFoundError, NoInfoError
