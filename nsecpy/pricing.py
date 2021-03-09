@@ -29,8 +29,9 @@ class DiscountPrice(Price):
     end: datetime = None
 
     def __init__(self, data) -> None:
-        self.start = dateparser.parse(data['start_datetime'], settings={'TIMEZONE': "UTC"})
-        self.end = dateparser.parse(data['end_datetime'], settings={'TIMEZONE': "UTC"})
+        tzsettings = {'TIMEZONE': 'UTC', 'RETURN_AS_TIMEZONE_AWARE': True}
+        self.start = dateparser.parse(data['start_datetime'], settings=tzsettings)
+        self.end = dateparser.parse(data['end_datetime'], settings=tzsettings)
         super().__init__(data)
 
 
