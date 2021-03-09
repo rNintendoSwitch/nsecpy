@@ -39,15 +39,17 @@ class DiscountPrice(Price):
 
 @dataclass
 class PriceQuery:
-    sales_status: Literal["onsale", "sales_termination"]
-    title_id: int
-    regular_price: Price
+    region: "Region" = None
+    sales_status: Literal["onsale", "sales_termination"] = None
+    title_id: int = None
+    regular_price: Price = None
     discount_price: Optional[DiscountPrice] = None
 
-    def __init__(self, data) -> None:
+    def __init__(self, data, region) -> None:
         if data['sales_status'] == 'not_found':
             raise NotFoundError('The API reported no price info was found in this region for given game id')
 
+        self.region = region
         self.sales_status = data['sales_status']
         self.title_id = data['title_id']
         self.regular_price = Price(data['regular_price'])
@@ -68,6 +70,6 @@ async def queryPrice(region: "Region", game_id: int) -> PriceQuery:
             data = await request.json()
 
             if 'prices' in data and data['prices']:
-                return PriceQuery(data['prices'][0])
+                return PriceQuery(data['prices'][0], region)
             else:
                 raise NoDataError('The API did not return any price data for given game id')

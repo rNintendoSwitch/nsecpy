@@ -53,6 +53,7 @@ async def test_pricing_compare_discount():
         discount = await regions['en_US'].queryPrice(DISCOUNT_ID)
         normal = await regions['en_US'].queryPrice(NORMAL_ID)
 
+        assert normal.region == discount.region
         assert normal.sales_status == discount.sales_status
         assert normal.regular_price == discount.regular_price
         assert normal.title_id == NORMAL_ID
