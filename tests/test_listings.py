@@ -1,3 +1,4 @@
+import copy
 import pytest
 from aioresponses import aioresponses
 
@@ -62,7 +63,7 @@ async def test_listing_valid_types():
 @pytest.mark.asyncio
 async def test_listing_missing_images():
     # Build Test Response
-    game = SAMPLE_GAME
+    game = copy.deepcopy(SAMPLE_GAME)
     game['rating_info']['content_descriptors'][0].pop('image_url')
     game['rating_info']['content_descriptors'][0].pop('svg_image_url')
     game['rating_info']['rating'].pop('image_url')
@@ -78,7 +79,7 @@ async def test_listing_missing_images():
 @pytest.mark.asyncio
 async def test_listing_malformed_rating():
     # Build Test Response
-    game = SAMPLE_GAME
+    game = copy.deepcopy(SAMPLE_GAME)
     game['rating_info']['rating'] = {'id': 0}
     payload = build_sample_response_from_contents([game], 1, 0)
 
