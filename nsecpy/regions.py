@@ -12,6 +12,7 @@ class Region:
     familar_name: str
     # search_provider: SearchProvider = None
     supports_listing: bool = True
+    supports_pricing: bool = True
     netinfo_TZ: Optional[str] = None
 
     async def getStatus(self) -> Status:
@@ -41,7 +42,7 @@ regions_list = [
     Region('ja_JP', 'Japan', netinfo_TZ="Asia/Tokyo"),
     Region('ko_KR', 'Korea', netinfo_TZ="Asia/Seoul"),
     Region('zh_CN', 'China Mainland (Tencent)', netinfo_TZ="Asia/Shanghai", supports_listing=False),
-    Region('zh_TW', 'Taiwan', netinfo_TZ="Asia/Taipei", supports_listing=False),
+    Region('zh_TW', 'Taiwan', netinfo_TZ="Asia/Taipei", supports_listing=False, supports_pricing=False),
     Region('zh_HK', 'Hong Kong'),
     Region('en_AU', 'Australia', netinfo_TZ="Australia/Sydney"),
     Region('en_NZ', 'New Zealand'),

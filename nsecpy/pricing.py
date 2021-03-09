@@ -96,12 +96,12 @@ class PriceQuery:
 
 # from nsecpy import regions
 # import asyncio
-
+#
 # async def run():
 #   async for game in regions['en_US'].gameListing('sales'):
 #     print(await game.queryPrice())
-
-
+#
+#
 # asyncio.run ( run()  )
 
 
@@ -114,7 +114,8 @@ class NoInfoError(Exception):
 
 
 async def queryPrice(region: "Region", game_id: int) -> PriceQuery:
-    # TODO: Check what regions this supports
+    if not region.supports_pricing:
+        raise ValueError("Region does not support listings")
 
     lang, reg = region.culture_code.split('_')
     url = f"https://api.ec.nintendo.com/v1/price?country={reg}&lang={lang}&ids={game_id}"
