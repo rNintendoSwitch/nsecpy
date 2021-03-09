@@ -35,12 +35,15 @@ class DiscountPrice(Price):
 
 @dataclass
 class PriceQuery:
-    sales_status: Literal["onsale"]
+    sales_status: Literal["onsale", "sales_termination"]
     title_id: int
     regular_price: Price
     discount_price: Optional[DiscountPrice] = None
 
     def __init__(self, data) -> None:
+        if data['sales_status'] == 'not_found':
+            raise NotFoundError('The API reported no price info was found in this region for given game id')
+
         self.sales_status = data['sales_status']
         self.title_id = data['title_id']
         self.regular_price = Price(data['regular_price'])
@@ -49,6 +52,7 @@ class PriceQuery:
 
 
 ### Sample Responses:
+# {"personalized":false,"country":"US","prices":[]}
 # {'personalized': False, 'country': 'US', 'prices': [{'title_id': 70010000009922, 'sales_status': 'not_found'}]}
 # {
 #     "personalized": false,
@@ -79,6 +83,8 @@ class PriceQuery:
 #         }
 #     ],
 # }
+#
+# {"personalized":false,"country":"US","prices":[{"title_id":70010000013347,"sales_status":"sales_termination","regular_price":{"amount":"$0.00","currency":"USD","raw_value":"0"}}]}
 
 # Sample Tests:
 # from nsecpy import regions
@@ -115,13 +121,8 @@ async def queryPrice(region: "Region", game_id: int) -> PriceQuery:
         async with session.get(url) as request:
             request.raise_for_status()
             data = await request.json()
-            print(data)
 
             if 'prices' in data and data['prices']:
-                price_data = data['prices'][0]
-                if not price_data['sales_status'] == 'not_found':
-                    return PriceQuery(price_data)
-                else:
-                    return NotFoundError('The API reported no price info was found in this region for given game id')
+                return PriceQuery(data['prices'][0])
             else:
-                return NoInfoError('The API did not return any price info for given game id')
+                raise NoInfoError('The API did not return any price info for given game id')
