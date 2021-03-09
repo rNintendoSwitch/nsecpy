@@ -5,8 +5,8 @@ from typing import TYPE_CHECKING, Generator, List, Literal, Optional
 import aiohttp
 import dateparser
 
-from .pricing import PriceQuery, queryPrice
 from .exceptions import UnsupportedRegionError
+from .pricing import PriceQuery, queryPrice
 
 
 COUNT = 30  # Items per page of paginated response

@@ -6,7 +6,8 @@ from typing import TYPE_CHECKING, List, Literal, Optional
 import aiohttp
 import dateparser
 
-from .exceptions import UnsupportedRegionError, NotFoundError, NoDataError
+from .exceptions import NoDataError, NotFoundError, UnsupportedRegionError
+
 
 if TYPE_CHECKING:
     from .regions import Region  # pragma: no cover

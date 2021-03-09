@@ -1,9 +1,11 @@
 import copy
+
 import pytest
 from aioresponses import aioresponses
 
-from nsecpy import regions, NotFoundError, NoDataError, UnsupportedRegionError
+from nsecpy import NoDataError, NotFoundError, UnsupportedRegionError, regions
 from nsecpy.listing import Game
+
 from .sample_data import SAMPLE_GAME, SAMPLE_PRICE_RESPONSE
 
 

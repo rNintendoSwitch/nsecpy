@@ -158,7 +158,7 @@ SAMPLE_GAME = {
     "target_titles": [],
 }
 
-SAMPLE_PRICE_RESPONSE  ={
+SAMPLE_PRICE_RESPONSE = {
     "personalized": False,
     "country": "US",
     "prices": [

@@ -1,8 +1,9 @@
 import pytest
 from aioresponses import aioresponses
 
-from nsecpy import regions, UnsupportedRegionError
-from .sample_data import SAMPLE_STATUS_EN, SAMPLE_STATUS_DE
+from nsecpy import UnsupportedRegionError, regions
+
+from .sample_data import SAMPLE_STATUS_DE, SAMPLE_STATUS_EN
 
 
 @pytest.mark.asyncio

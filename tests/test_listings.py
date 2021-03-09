@@ -1,9 +1,11 @@
 import copy
+
 import pytest
 from aioresponses import aioresponses
 
-from nsecpy import regions, UnsupportedRegionError
+from nsecpy import UnsupportedRegionError, regions
 from nsecpy.listing import COUNT
+
 from .sample_data import SAMPLE_GAME
 
 
