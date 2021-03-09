@@ -63,6 +63,7 @@ class RatingSystem:
 
 @dataclass
 class Game:
+    region: "Region" = None
     content_type: str = None  # Literal["game", "bundle"] ??? expand and replace hint
     dominant_colors: List[str] = None
     formal_name: str = None
@@ -78,7 +79,8 @@ class Game:
     tags: List = field(default_factory=list)
     target_titles: List = field(default_factory=list)
 
-    def __init__(self, data):
+    def __init__(self, data, region):
+        self.region = region
         self.content_type = data['content_type']
         self.dominant_colors = data['dominant_colors']
         self.formal_name = data['formal_name']
@@ -115,7 +117,7 @@ async def gameListing(region: "Region", type: Literal["sales", "new", "ranking"]
                 data = await request.json()
 
                 for game in data['contents']:
-                    yield Game(game)
+                    yield Game(game, region)
 
                 if (offset + COUNT) >= data['total']:
                     break
