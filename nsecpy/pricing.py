@@ -6,6 +6,7 @@ from typing import TYPE_CHECKING, List, Literal, Optional
 import aiohttp
 import dateparser
 
+
 if TYPE_CHECKING:
     from .regions import Region  # pragma: no cover
 
