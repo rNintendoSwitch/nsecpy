@@ -20,7 +20,7 @@ class RatingContent:
     image_url: Optional[str] = None  # JP Field
     svg_image_url: Optional[str] = None  # JP Field
 
-    def __init__(self, data):
+    def __init__(self, data) -> None:
         self.id = data['id']
         self.name = data['name']
         self.type = data['type']
@@ -39,7 +39,7 @@ class Rating:
     provisional: bool = None
     svg_image_url: str = None
 
-    def __init__(self, data):
+    def __init__(self, data) -> None:
         if (data['id']) == 0:
             return
 
@@ -56,7 +56,7 @@ class RatingSystem:
     id: int = None
     name: str = None
 
-    def __init__(self, data):
+    def __init__(self, data) -> None:
         self.id = data['id']
         self.name = data['name']
 
@@ -79,7 +79,7 @@ class Game:
     tags: List = field(default_factory=list)
     target_titles: List = field(default_factory=list)
 
-    def __init__(self, data, region):
+    def __init__(self, data, region) -> None:
         self.region = region
         self.content_type = data['content_type']
         self.dominant_colors = data['dominant_colors']
