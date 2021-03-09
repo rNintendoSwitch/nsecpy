@@ -55,7 +55,7 @@ class PlatformOutage:
         self.message = data['message']
         self.free_write = data['free_write']
         self.begin = dateparser.parse(data['begin'].replace(' :', ':'), settings=tzsettings)
-        self.end = dateparser.parse(data['end'].replace(' :', ':'), tzsettings)
+        self.end = dateparser.parse(data['end'].replace(' :', ':'), settings=tzsettings)
         if data.get('utc_del_time'):
             self.utc_del_time = dateparser.parse(
                 data['utc_del_time'].replace(' :', ':'),
@@ -64,7 +64,7 @@ class PlatformOutage:
         self.event_status = EventStatus(int(data['event_status']))
         self.services = data.get('services', [])
         if data.get('update_date'):
-            self.update_date = dateparser.parse(data['update_date'].replace(' :', ':'), tzsettings)
+            self.update_date = dateparser.parse(data['update_date'].replace(' :', ':'), settings=tzsettings)
 
 
 @dataclass
