@@ -7,12 +7,9 @@ import aiohttp
 import dateparser
 
 from .exceptions import NoDataError, NotFoundError, UnsupportedRegionError
-from .utils import grouper
 
 
 if TYPE_CHECKING:
-    from nsecpy.listing import Game
-
     from .regions import Region  # pragma: no cover
 
 
@@ -62,7 +59,7 @@ class PriceQuery:
 
 async def queryPrice(region: "Region", game_id: int) -> PriceQuery:
     if not region.supports_pricing:
-        raise UnsupportedRegionError("Region does not support pricing")
+        raise UnsupportedRegionError("Region does not support listings")
 
     lang, reg = region.culture_code.split('_')
     url = f"https://api.ec.nintendo.com/v1/price?country={reg}&lang={lang}&ids={game_id}"
@@ -76,29 +73,3 @@ async def queryPrice(region: "Region", game_id: int) -> PriceQuery:
                 return PriceQuery(data['prices'][0], region)
             else:
                 raise NoDataError('The API did not return any price data for given game id')
-
-
-async def attachPrices(games: List["Game"], region: "Region") -> List["Game"]:
-    if not region.supports_pricing:
-        raise UnsupportedRegionError("Region does not support pricing")
-
-    lang, reg = region.culture_code.split('_')
-
-    ret = []
-    for set in grouper(games, 50):  # endpoint only takes 50 things at once, use grouper to get sets of 50
-        ids = ','.join([str(game.id) for game in set])
-        url = f"https://api.ec.nintendo.com/v1/price?country={reg}&lang={lang}&ids={ids}"
-
-        async with aiohttp.ClientSession() as session:
-            async with session.get(url) as request:
-                request.raise_for_status()
-                data = await request.json()
-
-                prices = data['prices']
-                for game in set:
-                    value = next((price for price in prices if price['title_id'] == game.id), None)
-                    if value:
-                        pd = PriceQuery(value, region)
-                    game._price = pd
-                    ret.append(game)
-    return ret
