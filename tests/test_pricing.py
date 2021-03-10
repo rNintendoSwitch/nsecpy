@@ -1,23 +1,14 @@
 import copy
 
 import pytest
+import re
 from aioresponses import aioresponses
 
 from nsecpy import UnsupportedRegionError, regions
 from nsecpy.listing import Game
+from nsecpy.pricing import MAX_PRICES
 
 from .sample_data import SAMPLE_GAME, SAMPLE_PRICE_RESPONSE
-
-
-@pytest.mark.asyncio
-async def test_pricing_sane_datatime():
-    with aioresponses() as m:
-        url = 'https://api.ec.nintendo.com/v1/price?country=US&lang=en&ids=70010000039205'
-        m.get(url, payload=SAMPLE_PRICE_RESPONSE)
-
-        price = await regions['en_US'].queryPrice(70010000039205)
-
-        assert price.discount_price.end > price.discount_price.start
 
 
 @pytest.mark.asyncio
@@ -33,6 +24,7 @@ async def test_pricing_from_game():
         price = await game.queryPrice()
 
         assert price
+        assert price.discount_price.end > price.discount_price.start
 
 
 @pytest.mark.asyncio
@@ -59,6 +51,52 @@ async def test_pricing_compare_discount():
         assert normal.title_id == NORMAL_ID
         assert discount.title_id == DISCOUNT_ID
         assert discount.discount_price
+
+
+@pytest.mark.asyncio
+async def test_pricing_multiple():
+    # Build responses
+    START_ID = 70010000000000
+    ids = [r for r in range(START_ID, START_ID + MAX_PRICES + 1)]  # MAX_PRICES + 1 items
+
+    page1_ids = ids[:-1]  # First MAX_PRICES items
+    page1_ids_str = ','.join([str(i) for i in page1_ids])
+    page2_id = ids[-1]  # Last item
+
+    page1_response = copy.deepcopy(SAMPLE_PRICE_RESPONSE)
+    page1_response['prices'].pop(0)
+    for id in page1_ids:
+        item = copy.deepcopy(SAMPLE_PRICE_RESPONSE['prices'][0])
+        item['title_id'] = id
+        page1_response['prices'].append(item)
+
+    page2_response = copy.deepcopy(SAMPLE_PRICE_RESPONSE)
+    page2_response['prices'][0]['title_id'] = page2_id
+
+    with aioresponses() as m:
+        # Temporary fix for aioresponses, who has a bug that double encodes URLs as of aioresponses 0.7.2
+        # https://github.com/pnuckowski/aioresponses/issues/179
+        double_ids = page1_ids_str.replace(",", "%252C")
+        pattern = f'https://api\\.ec\\.nintendo\\.com/v1/price\\?country=US&ids={double_ids}&lang=en'
+        m.get(re.compile(pattern), payload=page1_response)
+
+        # m.get(f'https://api.ec.nintendo.com/v1/price?country=US&lang=en&ids={page1_ids_str}', payload=page1_response)
+        m.get(f'https://api.ec.nintendo.com/v1/price?country=US&lang=en&ids={page2_id}', payload=page2_response)
+
+        lastPrice = None
+        priceCount = 0
+
+        async for price in regions['en_US'].queryPrices(ids):
+            if lastPrice:
+                assert price.region == lastPrice.region
+                assert price.sales_status == lastPrice.sales_status
+                assert price.regular_price == lastPrice.regular_price
+                assert price.discount_price == lastPrice.discount_price
+
+            priceCount += 1
+            lastPrice = price
+
+        assert priceCount == len(ids)
 
 
 @pytest.mark.asyncio

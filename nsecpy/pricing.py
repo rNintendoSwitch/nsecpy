@@ -80,7 +80,4 @@ async def queryPrices(region: "Region", games: List[Union[int, "Game"]]) -> Gene
                 data = await request.json()
 
                 for price in data['prices']:
-                    if price:
-                        yield PriceQuery(price, region)
-                    else:
-                        yield None
+                    yield PriceQuery(price, region)
