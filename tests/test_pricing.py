@@ -1,7 +1,7 @@
 import copy
+import re
 
 import pytest
-import re
 from aioresponses import aioresponses
 
 from nsecpy import UnsupportedRegionError, regions

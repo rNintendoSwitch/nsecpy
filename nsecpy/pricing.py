@@ -1,18 +1,19 @@
 from dataclasses import dataclass, field
 from datetime import datetime
 from os import execlp  # for typehinting
-from typing import TYPE_CHECKING, List, Literal, Optional, Union, Generator
+from typing import TYPE_CHECKING, Generator, List, Literal, Optional, Union
 
 import aiohttp
 import dateparser
 
 from .exceptions import UnsupportedRegionError
 
+
 MAX_PRICES = 50  # Maximum prices per query
 
 if TYPE_CHECKING:
-    from .regions import Region  # pragma: no cover
     from .listing import Game  # pragma: no cover
+    from .regions import Region  # pragma: no cover
 
 
 @dataclass
