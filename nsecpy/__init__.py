@@ -1,2 +1,2 @@
-from .exceptions import NoDataError, NotFoundError, UnsupportedRegionError
+from .exceptions import UnsupportedRegionError
 from .regions import regions

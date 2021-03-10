@@ -1,16 +1,18 @@
 from dataclasses import dataclass, field
 from datetime import datetime
 from os import execlp  # for typehinting
-from typing import TYPE_CHECKING, List, Literal, Optional
+from typing import TYPE_CHECKING, List, Literal, Optional, Union, Generator
 
 import aiohttp
 import dateparser
 
-from .exceptions import NoDataError, NotFoundError, UnsupportedRegionError
+from .exceptions import UnsupportedRegionError
 
+MAX_PRICES = 50  # Maximum prices per query
 
 if TYPE_CHECKING:
     from .regions import Region  # pragma: no cover
+    from .listing import Game  # pragma: no cover
 
 
 @dataclass
@@ -40,36 +42,51 @@ class DiscountPrice(Price):
 @dataclass
 class PriceQuery:
     region: "Region" = None
-    sales_status: Literal["onsale", "sales_termination"] = None
+    sales_status: Literal["onsale", "sales_termination", "not_found"] = None
     title_id: int = None
-    regular_price: Price = None
+    regular_price: Optional[Price] = None
     discount_price: Optional[DiscountPrice] = None
 
     def __init__(self, data, region) -> None:
-        if data['sales_status'] == 'not_found':
-            raise NotFoundError('The API reported no price info was found in this region for given game id')
-
         self.region = region
         self.sales_status = data['sales_status']
-        self.title_id = data['title_id']
-        self.regular_price = Price(data['regular_price'])
+        if data.get('title_id'):
+            self.title_id = data['title_id']
+        if data.get('regular_price'):
+            self.regular_price = Price(data['regular_price'])
         if data.get('discount_price'):
             self.discount_price = DiscountPrice(data['discount_price'])
 
 
-async def queryPrice(region: "Region", game_id: int) -> PriceQuery:
+async def queryPrice(region: "Region", game: Union[int, "Game"]) -> PriceQuery:
+    return [g async for g in queryPrices(region, [game])][0]
+
+
+async def queryPrices(region: "Region", games: List[Union[int, "Game"]]) -> Generator[Optional[PriceQuery], None, None]:
     if not region.supports_pricing:
         raise UnsupportedRegionError("Region does not support listings")
 
     lang, reg = region.culture_code.split('_')
-    url = f"https://api.ec.nintendo.com/v1/price?country={reg}&lang={lang}&ids={game_id}"
+    ids = [g if isinstance(g, int) else g.id for g in games]  # Convert games to their id
+    groups = [ids[o : (o + MAX_PRICES)] for o in range(0, len(games), MAX_PRICES)]  # Put games in groups of MAX_PRICES
 
     async with aiohttp.ClientSession() as session:
-        async with session.get(url) as request:
-            request.raise_for_status()
-            data = await request.json()
+        for group in groups:
+            ids_str = ','.join([str(id) for id in group])
+            url = f"https://api.ec.nintendo.com/v1/price?country={reg}&lang={lang}&ids={ids_str}"
+            async with session.get(url) as request:
+                request.raise_for_status()
+                data = await request.json()
+                prices = data['prices']
 
-            if 'prices' in data and data['prices']:
-                return PriceQuery(data['prices'][0], region)
-            else:
-                raise NoDataError('The API did not return any price data for given game id')
+                # Some items did not give a response, so add some Nones
+                if len(prices) > len(group):
+                    for i in range(0, len(group)):
+                        if group[i] != prices['title_id']:
+                            prices.insert(i, None)
+
+                for price in prices:
+                    if price:
+                        yield PriceQuery(price, region)
+                    else:
+                        yield None

@@ -101,7 +101,7 @@ class Game:
         self.target_titles = data['target_titles']
 
     async def queryPrice(self) -> PriceQuery:
-        return await queryPrice(self.region, self.id)
+        return await queryPrice(self.region, self)
 
 
 async def gameListing(region: "Region", type: Literal["sales", "new", "ranking"]) -> Generator[Game, None, None]:

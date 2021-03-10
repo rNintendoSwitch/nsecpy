@@ -3,7 +3,7 @@ import copy
 import pytest
 from aioresponses import aioresponses
 
-from nsecpy import NoDataError, NotFoundError, UnsupportedRegionError, regions
+from nsecpy import UnsupportedRegionError, regions
 from nsecpy.listing import Game
 
 from .sample_data import SAMPLE_GAME, SAMPLE_PRICE_RESPONSE
@@ -61,32 +61,32 @@ async def test_pricing_compare_discount():
         assert discount.discount_price
 
 
-@pytest.mark.asyncio
-async def test_pricing_not_found():
-    with aioresponses() as m:
-        # Build not_found response data
-        response = copy.deepcopy(SAMPLE_PRICE_RESPONSE)
-        response['prices'][0].pop('regular_price')
-        response['prices'][0].pop('discount_price')
-        response['prices'][0]['sales_status'] = 'not_found'
+# @pytest.mark.asyncio
+# async def test_pricing_not_found():
+#     with aioresponses() as m:
+#         # Build not_found response data
+#         response = copy.deepcopy(SAMPLE_PRICE_RESPONSE)
+#         response['prices'][0].pop('regular_price')
+#         response['prices'][0].pop('discount_price')
+#         response['prices'][0]['sales_status'] = 'not_found'
 
-        m.get('https://api.ec.nintendo.com/v1/price?country=US&lang=en&ids=70010000039205', payload=response)
+#         m.get('https://api.ec.nintendo.com/v1/price?country=US&lang=en&ids=70010000039205', payload=response)
 
-        with pytest.raises(NotFoundError) as e_info:
-            await regions['en_US'].queryPrice(70010000039205)
+#         with pytest.raises(NotFoundError) as e_info:
+#             await regions['en_US'].queryPrice(70010000039205)
 
 
-@pytest.mark.asyncio
-async def test_pricing_no_data():
-    with aioresponses() as m:
-        # Build not_found response data
-        response = copy.deepcopy(SAMPLE_PRICE_RESPONSE)
-        response['prices'].pop(0)
+# @pytest.mark.asyncio
+# async def test_pricing_no_data():
+#     with aioresponses() as m:
+#         # Build not_found response data
+#         response = copy.deepcopy(SAMPLE_PRICE_RESPONSE)
+#         response['prices'].pop(0)
 
-        m.get('https://api.ec.nintendo.com/v1/price?country=US&lang=en&ids=70010000039205', payload=response)
+#         m.get('https://api.ec.nintendo.com/v1/price?country=US&lang=en&ids=70010000039205', payload=response)
 
-        with pytest.raises(NoDataError) as e_info:
-            await regions['en_US'].queryPrice(70010000039205)
+#         with pytest.raises(NoDataError) as e_info:
+#             await regions['en_US'].queryPrice(70010000039205)
 
 
 @pytest.mark.asyncio
