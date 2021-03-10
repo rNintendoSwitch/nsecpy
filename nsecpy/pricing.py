@@ -59,7 +59,8 @@ class PriceQuery:
 
 
 async def queryPrice(region: "Region", game: Union[int, "Game"]) -> PriceQuery:
-    return [g async for g in queryPrices(region, [game])][0]
+    price = [g async for g in queryPrices(region, [game])]
+    return price[0] if price else None
 
 
 async def queryPrices(region: "Region", games: List[Union[int, "Game"]]) -> Generator[PriceQuery, None, None]:
