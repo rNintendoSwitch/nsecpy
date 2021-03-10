@@ -18,8 +18,10 @@ class Region:
     async def getStatus(self) -> Status:
         return await getStatus(self)
 
-    async def gameListing(self, type: Literal["sales", "new", "ranking"]) -> Generator[Game, None, None]:
-        async for game in gameListing(self, type):
+    async def gameListing(
+        self, type: Literal["sales", "new", "ranking"], fetch_prices=False
+    ) -> Generator[Game, None, None]:
+        async for game in gameListing(self, type, fetch_prices):
             yield game
 
     async def queryPrice(self, game_id: int) -> PriceQuery:

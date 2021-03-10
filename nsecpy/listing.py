@@ -5,8 +5,8 @@ from typing import TYPE_CHECKING, Generator, List, Literal, Optional
 import aiohttp
 import dateparser
 
-from .exceptions import UnsupportedRegionError
-from .pricing import PriceQuery, queryPrice
+from .exceptions import NoDataError, UnsupportedRegionError
+from .pricing import PriceQuery, queryPrice, attachPrices
 
 
 COUNT = 30  # Items per page of paginated response
@@ -81,6 +81,7 @@ class Game:
     screenshots: List[str] = field(default_factory=list)
     tags: List = field(default_factory=list)
     target_titles: List = field(default_factory=list)
+    _price: Optional[PriceQuery] = None
 
     def __init__(self, data, region) -> None:
         self.region = region
@@ -101,10 +102,15 @@ class Game:
         self.target_titles = data['target_titles']
 
     async def queryPrice(self) -> PriceQuery:
+        """If you require fresh data, ensure that the _price field is empty before running this method"""
+        if self._price:
+            return self._price
         return await queryPrice(self.region, self.id)
 
 
-async def gameListing(region: "Region", type: Literal["sales", "new", "ranking"]) -> Generator[Game, None, None]:
+async def gameListing(
+    region: "Region", type: Literal["sales", "new", "ranking"], fetch_prices=False
+) -> Generator[Game, None, None]:
     if not region.supports_listing:
         raise UnsupportedRegionError("Region does not support listings")
 
@@ -121,9 +127,12 @@ async def gameListing(region: "Region", type: Literal["sales", "new", "ranking"]
             async with session.get(url) as request:
                 request.raise_for_status()
                 data = await request.json()
-
-                for game in data['contents']:
-                    yield Game(game, region)
+                print('making a request..')
+                games = [Game(game, region) for game in data['contents']]
+                if fetch_prices:
+                    games = await attachPrices(games, region)
+                for game in games:
+                    yield game
 
                 if (offset + COUNT) >= data['total']:
                     break
