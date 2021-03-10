@@ -6,7 +6,7 @@ import aiohttp
 import dateparser
 
 from .exceptions import NoDataError, UnsupportedRegionError
-from .pricing import PriceQuery, queryPrice, attachPrices
+from .pricing import PriceQuery, attachPrices, queryPrice
 
 
 COUNT = 30  # Items per page of paginated response

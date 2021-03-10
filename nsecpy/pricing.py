@@ -10,8 +10,9 @@ from .exceptions import NoDataError, NotFoundError, UnsupportedRegionError
 
 
 if TYPE_CHECKING:
-    from .regions import Region  # pragma: no cover
     from nsecpy.listing import Game
+
+    from .regions import Region  # pragma: no cover
 
 
 @dataclass
