@@ -113,9 +113,9 @@ async def gameListing(
 ) -> Generator[Game, None, None]:
     if not region.supports_listing:
         raise UnsupportedRegionError("Region does not support listings")
-
-    if type not in ["sales", "new", "ranking"]:
-        raise ValueError("Invalid type: " + type)
+    valid_types = ["sales", "new", "ranking"]
+    if type not in valid_types:
+        raise ValueError(f"Invalid type: {type}. valid types are {','.join(valid_types)}")
 
     lang, reg = region.culture_code.split('_')
     offset = 0
@@ -127,7 +127,7 @@ async def gameListing(
             async with session.get(url) as request:
                 request.raise_for_status()
                 data = await request.json()
-                print('making a request..')
+
                 games = [Game(game, region) for game in data['contents']]
                 if fetch_prices:
                     games = await attachPrices(games, region)
