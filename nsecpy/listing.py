@@ -5,8 +5,8 @@ from typing import TYPE_CHECKING, Generator, List, Literal, Optional
 import aiohttp
 import dateparser
 
-from .exceptions import NoDataError, UnsupportedRegionError
-from .pricing import PriceQuery, attachPrices, queryPrice
+from .exceptions import UnsupportedRegionError
+from .pricing import PriceQuery, queryPrice
 
 
 COUNT = 30  # Items per page of paginated response
@@ -81,7 +81,6 @@ class Game:
     screenshots: List[str] = field(default_factory=list)
     tags: List = field(default_factory=list)
     target_titles: List = field(default_factory=list)
-    _price: Optional[PriceQuery] = None
 
     def __init__(self, data, region) -> None:
         self.region = region
@@ -102,20 +101,15 @@ class Game:
         self.target_titles = data['target_titles']
 
     async def queryPrice(self) -> PriceQuery:
-        """If you require fresh data, ensure that the _price field is empty before running this method"""
-        if self._price:
-            return self._price
-        return await queryPrice(self.region, self.id)
+        return await queryPrice(self.region, self)
 
 
-async def gameListing(
-    region: "Region", type: Literal["sales", "new", "ranking"], fetch_prices=False
-) -> Generator[Game, None, None]:
+async def gameListing(region: "Region", type: Literal["sales", "new", "ranking"]) -> Generator[Game, None, None]:
     if not region.supports_listing:
         raise UnsupportedRegionError("Region does not support listings")
-    valid_types = ["sales", "new", "ranking"]
-    if type not in valid_types:
-        raise ValueError(f"Invalid type: {type}. valid types are {','.join(valid_types)}")
+
+    if type not in ["sales", "new", "ranking"]:
+        raise ValueError("Invalid type: " + type)
 
     lang, reg = region.culture_code.split('_')
     offset = 0
@@ -128,11 +122,8 @@ async def gameListing(
                 request.raise_for_status()
                 data = await request.json()
 
-                games = [Game(game, region) for game in data['contents']]
-                if fetch_prices:
-                    games = await attachPrices(games, region)
-                for game in games:
-                    yield game
+                for game in data['contents']:
+                    yield Game(game, region)
 
                 if (offset + COUNT) >= data['total']:
                     break

@@ -1,8 +1,8 @@
 from dataclasses import dataclass
-from typing import Generator, List, Literal, Optional
+from typing import Generator, List, Literal, Optional, Union
 
 from .listing import Game, gameListing
-from .pricing import PriceQuery, queryPrice
+from .pricing import PriceQuery, queryPrice, queryPrices
 from .status import Status, getStatus
 
 
@@ -18,14 +18,16 @@ class Region:
     async def getStatus(self) -> Status:
         return await getStatus(self)
 
-    async def gameListing(
-        self, type: Literal["sales", "new", "ranking"], fetch_prices=False
-    ) -> Generator[Game, None, None]:
-        async for game in gameListing(self, type, fetch_prices):
+    async def gameListing(self, type: Literal["sales", "new", "ranking"]) -> Generator[Game, None, None]:
+        async for game in gameListing(self, type):
             yield game
 
-    async def queryPrice(self, game_id: int) -> PriceQuery:
-        return await queryPrice(self, game_id)
+    async def queryPrice(self, game: Union[int, "Game"]) -> PriceQuery:
+        return await queryPrice(self, game)
+
+    async def queryPrices(self, games: List[Union[int, "Game"]]) -> Generator[PriceQuery, None, None]:
+        async for game in queryPrices(self, games):
+            yield game
 
 
 # Regions from https://www.nintendo.com/regionselector/
