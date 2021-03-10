@@ -62,7 +62,7 @@ async def queryPrice(region: "Region", game: Union[int, "Game"]) -> PriceQuery:
     return [g async for g in queryPrices(region, [game])][0]
 
 
-async def queryPrices(region: "Region", games: List[Union[int, "Game"]]) -> Generator[Optional[PriceQuery], None, None]:
+async def queryPrices(region: "Region", games: List[Union[int, "Game"]]) -> Generator[PriceQuery, None, None]:
     if not region.supports_pricing:
         raise UnsupportedRegionError("Region does not support listings")
 
@@ -77,15 +77,8 @@ async def queryPrices(region: "Region", games: List[Union[int, "Game"]]) -> Gene
             async with session.get(url) as request:
                 request.raise_for_status()
                 data = await request.json()
-                prices = data['prices']
 
-                # Some items did not give a response, so add some Nones
-                if len(prices) > len(group):
-                    for i in range(0, len(group)):
-                        if group[i] != prices['title_id']:
-                            prices.insert(i, None)
-
-                for price in prices:
+                for price in data['prices']:
                     if price:
                         yield PriceQuery(price, region)
                     else:

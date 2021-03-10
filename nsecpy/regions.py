@@ -25,8 +25,9 @@ class Region:
     async def queryPrice(self, game: Union[int, "Game"]) -> PriceQuery:
         return await queryPrice(self, game)
 
-    async def queryPrices(self, games: List[Union[int, "Game"]]) -> Generator[Optional[PriceQuery], None, None]:
-        return await queryPrices(self, games)
+    async def queryPrices(self, games: List[Union[int, "Game"]]) -> Generator[PriceQuery, None, None]:
+        async for game in queryPrices(self, games):
+            yield game
 
 
 # Regions from https://www.nintendo.com/regionselector/
