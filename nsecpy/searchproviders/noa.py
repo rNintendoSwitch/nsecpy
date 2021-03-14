@@ -1,5 +1,5 @@
 from . import SearchProvider
 
 
-class EnUsProvider(SearchProvider):
+class NOAProvider(SearchProvider):
     ...
