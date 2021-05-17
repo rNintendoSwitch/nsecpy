@@ -21,7 +21,7 @@ async def test_pricing_from_game():
         m.get('https://api.ec.nintendo.com/v1/price?country=US&lang=en&ids=70010000036098', payload=response)
 
         game = Game(SAMPLE_GAME, regions['en_US'])
-        price = await game.queryPrice()
+        price = await game.query_price()
 
         assert price
         assert price.discount_price.end > price.discount_price.start
@@ -42,8 +42,8 @@ async def test_pricing_compare_discount():
         m.get(URL_BASE + str(DISCOUNT_ID), payload=SAMPLE_PRICE_RESPONSE)
         m.get(URL_BASE + str(NORMAL_ID), payload=normal_response)
 
-        discount = await regions['en_US'].queryPrice(DISCOUNT_ID)
-        normal = await regions['en_US'].queryPrice(NORMAL_ID)
+        discount = await regions['en_US'].query_price(DISCOUNT_ID)
+        normal = await regions['en_US'].query_price(NORMAL_ID)
 
         assert normal.region == discount.region
         assert normal.sales_status == discount.sales_status
@@ -86,7 +86,7 @@ async def test_pricing_multiple():
         lastPrice = None
         priceCount = 0
 
-        async for price in regions['en_US'].queryPrices(ids):
+        async for price in regions['en_US'].query_prices(ids):
             if lastPrice:
                 assert price.region == lastPrice.region
                 assert price.sales_status == lastPrice.sales_status
@@ -110,7 +110,7 @@ async def test_pricing_not_found():
 
         m.get('https://api.ec.nintendo.com/v1/price?country=US&lang=en&ids=70010000039205', payload=response)
 
-        price = await regions['en_US'].queryPrice(70010000039205)
+        price = await regions['en_US'].query_price(70010000039205)
         assert price.sales_status == 'not_found'
 
 
@@ -123,7 +123,7 @@ async def test_pricing_no_data():
 
         m.get('https://api.ec.nintendo.com/v1/price?country=US&lang=en&ids=70010000039205', payload=response)
 
-        price = await regions['en_US'].queryPrice(70010000039205)
+        price = await regions['en_US'].query_price(70010000039205)
         assert price is None
 
 
@@ -132,7 +132,7 @@ async def test_pricing_invalid_region():
     for region in regions.values():
         if not region.supports_pricing:
             with pytest.raises(UnsupportedRegionError) as e_info:
-                await region.queryPrice(70010000039205)
+                await region.query_price(70010000039205)
 
             return
 

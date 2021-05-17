@@ -6,7 +6,7 @@ import aiohttp
 import dateparser
 
 from .exceptions import UnsupportedRegionError
-from .pricing import PriceQuery, queryPrice
+from .pricing import PriceQuery, query_price
 
 
 COUNT = 30  # Items per page of paginated response
@@ -100,11 +100,11 @@ class Game:
         self.tags = data['tags']
         self.target_titles = data['target_titles']
 
-    async def queryPrice(self) -> PriceQuery:
-        return await queryPrice(self.region, self)
+    async def query_price(self) -> PriceQuery:
+        return await query_price(self.region, self)
 
 
-async def gameListing(region: "Region", type: Literal["sales", "new", "ranking"]) -> Generator[Game, None, None]:
+async def query_listing(region: "Region", type: Literal["sales", "new", "ranking"]) -> Generator[Game, None, None]:
     if not region.supports_listing:
         raise UnsupportedRegionError("Region does not support listings")
 
