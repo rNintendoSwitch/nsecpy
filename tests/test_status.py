@@ -12,8 +12,8 @@ async def test_status_equality():
         m.get('https://www.nintendo.co.jp/netinfo/en_US/status.json', payload=SAMPLE_STATUS_EN)
         m.get('https://www.nintendo.co.jp/netinfo/de_DE/status.json', payload=SAMPLE_STATUS_DE)
 
-        en_status = await regions['en_US'].getStatus()
-        de_status = await regions['de_DE'].getStatus()
+        en_status = await regions['en_US'].get_status()
+        de_status = await regions['de_DE'].get_status()
 
         # Correct langs
         assert en_status.lang == 'en_US'
@@ -59,7 +59,7 @@ async def test_status_invalid_region():
     for region in regions.values():
         if not region.netinfo_TZ:
             with pytest.raises(UnsupportedRegionError) as e_info:
-                await region.getStatus()
+                await region.get_status()
 
             return
 

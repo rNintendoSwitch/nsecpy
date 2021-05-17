@@ -59,12 +59,12 @@ class PriceQuery:
             self.discount_price = DiscountPrice(data['discount_price'])
 
 
-async def queryPrice(region: "Region", game: Union[int, "Game"]) -> PriceQuery:
-    price = [g async for g in queryPrices(region, [game])]
+async def query_price(region: "Region", game: Union[int, "Game"]) -> PriceQuery:
+    price = [g async for g in query_prices(region, [game])]
     return price[0] if price else None
 
 
-async def queryPrices(region: "Region", games: List[Union[int, "Game"]]) -> Generator[PriceQuery, None, None]:
+async def query_prices(region: "Region", games: List[Union[int, "Game"]]) -> Generator[PriceQuery, None, None]:
     if not region.supports_pricing:
         raise UnsupportedRegionError("Region does not support listings")
 
