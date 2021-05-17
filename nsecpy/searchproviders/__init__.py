@@ -1,7 +1,4 @@
 class SearchProvider:
-    async def get_all(self) -> ...:
-        raise NotImplementedError("this SearchProvider does not support this method")
-
     async def search_by_nsuid(self, nsuid: str) -> ...:
         raise NotImplementedError("this SearchProvider does not support this method")
 
