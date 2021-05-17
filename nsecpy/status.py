@@ -83,7 +83,7 @@ class Status:
         self.temporary_maintenances = [PlatformOutage(each, region) for each in data.get('temporary_maintenances')]
 
 
-async def get_status(region: "Region") -> Status:
+async def query_status(region: "Region") -> Status:
     if not region.netinfo_TZ:
         raise UnsupportedRegionError("Region does not support netinfo")
 

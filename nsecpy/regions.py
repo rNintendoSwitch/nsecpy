@@ -1,9 +1,9 @@
 from dataclasses import dataclass
 from typing import Generator, List, Literal, Optional, Union
 
-from .listing import Game, get_listing
+from .listing import Game, query_listing
 from .pricing import PriceQuery, query_price, query_prices
-from .status import Status, get_status
+from .status import Status, query_status
 
 
 @dataclass
@@ -15,11 +15,11 @@ class Region:
     supports_pricing: bool = True
     netinfo_TZ: Optional[str] = None
 
-    async def get_status(self) -> Status:
-        return await get_status(self)
+    async def query_status(self) -> Status:
+        return await query_status(self)
 
-    async def get_listing(self, type: Literal["sales", "new", "ranking"]) -> Generator[Game, None, None]:
-        async for game in get_listing(self, type):
+    async def query_listing(self, type: Literal["sales", "new", "ranking"]) -> Generator[Game, None, None]:
+        async for game in query_listing(self, type):
             yield game
 
     async def query_price(self, game: Union[int, "Game"]) -> PriceQuery:

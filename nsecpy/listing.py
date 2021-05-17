@@ -104,7 +104,7 @@ class Game:
         return await query_price(self.region, self)
 
 
-async def get_listing(region: "Region", type: Literal["sales", "new", "ranking"]) -> Generator[Game, None, None]:
+async def query_listing(region: "Region", type: Literal["sales", "new", "ranking"]) -> Generator[Game, None, None]:
     if not region.supports_listing:
         raise UnsupportedRegionError("Region does not support listings")
 

@@ -36,7 +36,7 @@ async def test_listing_pagination():
         lastGame = None
         gameCount = 0
 
-        async for game in regions['en_US'].get_listing('ranking'):
+        async for game in regions['en_US'].query_listing('ranking'):
             if lastGame:
                 assert game == lastGame
 
@@ -57,7 +57,7 @@ async def test_listing_valid_types():
         for type in ["sales", "new", "ranking"]:
             m.get(f'https://ec.nintendo.com/api/US/en/search/{type}?offset=0&count={COUNT}', payload=payload)
 
-            async for game in regions['en_US'].get_listing(type):
+            async for game in regions['en_US'].query_listing(type):
                 if lastGame:
                     assert game == lastGame
 
@@ -74,7 +74,7 @@ async def test_listing_missing_images():
     with aioresponses() as m:
         m.get(f'https://ec.nintendo.com/api/US/en/search/ranking?offset=0&count={COUNT}', payload=payload)
 
-        async for game in regions['en_US'].get_listing('ranking'):
+        async for game in regions['en_US'].query_listing('ranking'):
             assert game
 
 
@@ -88,14 +88,14 @@ async def test_listing_malformed_rating():
     with aioresponses() as m:
         m.get(f'https://ec.nintendo.com/api/US/en/search/ranking?offset=0&count={COUNT}', payload=payload)
 
-        async for game in regions['en_US'].get_listing('ranking'):
+        async for game in regions['en_US'].query_listing('ranking'):
             assert game
 
 
 @pytest.mark.asyncio
 async def test_listing_invalid_type():
     with pytest.raises(ValueError) as e_info:
-        async for _ in regions['en_US'].get_listing('invalid_type_string'):
+        async for _ in regions['en_US'].query_listing('invalid_type_string'):
             pass
 
 
@@ -104,7 +104,7 @@ async def test_listing_invalid_region():
     for region in regions.values():
         if not region.supports_listing:
             with pytest.raises(UnsupportedRegionError) as e_info:
-                async for _ in region.get_listing('ranking'):
+                async for _ in region.query_listing('ranking'):
                     pass
 
             return
