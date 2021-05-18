@@ -73,12 +73,14 @@ class Game:
     hero_banner_url: str = None
     id: int = None
     is_new: bool = None
+    membership_required: bool = None
     public_status: Literal["public"] = None
     rating_content: List[RatingContent] = field(default_factory=list)
     rating: Rating = None
     rating_system: RatingSystem = None
     release_date_on_eshop: datetime = None
     screenshots: List[str] = field(default_factory=list)
+    strong_disclaimer: str = None
     tags: List = field(default_factory=list)
     target_titles: List = field(default_factory=list)
 
@@ -90,6 +92,7 @@ class Game:
         self.hero_banner_url = data['hero_banner_url']
         self.id = data['id']
         self.is_new = data['is_new']
+        self.membership_required = data['membership_required']
         self.public_status = data['public_status']
         self.rating_content = [RatingContent(c) for c in data['rating_info']['content_descriptors']]
         self.rating = Rating(data['rating_info']['rating'])
@@ -97,6 +100,7 @@ class Game:
         # TODO: is this dateparser correct?
         self.release_date_on_eshop = dateparser.parse(data['release_date_on_eshop'], settings={'TIMEZONE': "UTC"})
         self.screenshots = [s['images'][0]['url'] for s in data['screenshots']]
+        self.strong_disclaimer = data.get('strong_disclaimer', None)
         self.tags = data['tags']
         self.target_titles = data['target_titles']
 
