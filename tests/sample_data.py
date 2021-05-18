@@ -154,6 +154,7 @@ SAMPLE_GAME = {
         {"images": [{"url": "https://example.com/1.jpg"}]},
         {"images": [{"url": "https://example.com/2.jpg"}]},
     ],
+    "strong_disclaimer": "The quick brown fox jumps over the lazy dog.",
     "tags": [],
     "target_titles": [],
 }
